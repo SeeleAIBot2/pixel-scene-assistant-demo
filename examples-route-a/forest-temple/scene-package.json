@@ -1,0 +1,423 @@
+{
+  "artifact_type": "route-a-scene-generator-output",
+  "generated_at": "2026-04-17T09:29:25.589046+00:00",
+  "scene_brief": {
+    "scene_id": "route_a_森林神殿入口-黄昏-像素风-俯视角-有苔藓石阶和发光符文",
+    "prompt": "森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文",
+    "style_hint": "dark-fantasy",
+    "camera_view": "top-down",
+    "mood": "神秘",
+    "variation": "base",
+    "target_tileset_theme": "dark-ruins-base",
+    "map_size_tiles": {
+      "width": 20,
+      "height": 14
+    },
+    "tile_size": 16,
+    "detected_features": [
+      "temple_gate",
+      "main_gate",
+      "rune_circle",
+      "stairs",
+      "tree_cluster",
+      "path"
+    ],
+    "design_goal": "Produce an editable pixel scene layout for tile-based iteration rather than a flattened decorative image."
+  },
+  "layout_plan": {
+    "zones": [
+      {
+        "name": "entrance_focus",
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 3,
+        "purpose": "main focal point / gate / landmark"
+      },
+      {
+        "name": "mid_plaza",
+        "x": 7,
+        "y": 5,
+        "w": 6,
+        "h": 4,
+        "purpose": "main interaction area"
+      },
+      {
+        "name": "left_support",
+        "x": 1,
+        "y": 3,
+        "w": 6,
+        "h": 9,
+        "purpose": "vegetation / houses / props"
+      },
+      {
+        "name": "right_support",
+        "x": 13,
+        "y": 3,
+        "w": 6,
+        "h": 9,
+        "purpose": "vegetation / houses / props"
+      },
+      {
+        "name": "bottom_approach",
+        "x": 8,
+        "y": 10,
+        "w": 4,
+        "h": 4,
+        "purpose": "player entry / main path"
+      }
+    ],
+    "flow": [
+      {
+        "from": "bottom_approach",
+        "to": "mid_plaza",
+        "kind": "primary_path"
+      },
+      {
+        "from": "mid_plaza",
+        "to": "entrance_focus",
+        "kind": "visual_focal_flow"
+      }
+    ],
+    "walkable_logic": {
+      "primary_path_width_tiles": 2,
+      "path_bias": "centerline",
+      "blocking_rule": "keep focal approach readable and avoid decorative clutter on main route"
+    }
+  },
+  "tile_theme_selection": {
+    "tileset_name": "dark-ruins-base",
+    "palette": [
+      "#23253f",
+      "#5e4a62",
+      "#324838",
+      "#7a6d6a",
+      "#c7b469",
+      "#2d3549"
+    ],
+    "base_tiles": {
+      "ground": "moss_ground",
+      "path": "stone_path",
+      "water": "rune_pool",
+      "walls": "ruin_wall",
+      "roof": "temple_cap"
+    },
+    "hero_module": "temple_gate_module",
+    "prop_modules": [
+      "tree_cluster",
+      "rune_decals",
+      "stone_lamp",
+      "ruin_pillar"
+    ],
+    "selection_rationale": "Choose reusable tile/theme modules first, then compose scene with editable structures instead of generating a flattened image."
+  },
+  "scene_composition": {
+    "composition_rules": [
+      "keep central path readable",
+      "reserve top-center or mid-center as focal zone",
+      "use props to support path readability, not obscure it"
+    ],
+    "structures": [
+      {
+        "id": "hero_gate",
+        "kind": "landmark",
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 3,
+        "module": "temple_gate_module"
+      }
+    ],
+    "props": [
+      {
+        "id": "tree_l_1",
+        "kind": "tree",
+        "x": 2,
+        "y": 4,
+        "module": "tree_cluster"
+      },
+      {
+        "id": "tree_r_1",
+        "kind": "tree",
+        "x": 17,
+        "y": 4,
+        "module": "tree_cluster"
+      },
+      {
+        "id": "runes",
+        "kind": "decal",
+        "x": 10,
+        "y": 5,
+        "module": "rune_decals"
+      }
+    ],
+    "layers": [
+      "ground",
+      "path",
+      "water",
+      "structures",
+      "props",
+      "collision"
+    ]
+  },
+  "editable_export": {
+    "editable_export_version": "v0.2",
+    "recommended_tools": [
+      "Tiled",
+      "LDtk",
+      "Pixelorama"
+    ],
+    "scene_brief": {
+      "scene_id": "route_a_森林神殿入口-黄昏-像素风-俯视角-有苔藓石阶和发光符文",
+      "prompt": "森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文",
+      "style_hint": "dark-fantasy",
+      "camera_view": "top-down",
+      "mood": "神秘",
+      "variation": "base",
+      "target_tileset_theme": "dark-ruins-base",
+      "map_size_tiles": {
+        "width": 20,
+        "height": 14
+      },
+      "tile_size": 16,
+      "detected_features": [
+        "temple_gate",
+        "main_gate",
+        "rune_circle",
+        "stairs",
+        "tree_cluster",
+        "path"
+      ],
+      "design_goal": "Produce an editable pixel scene layout for tile-based iteration rather than a flattened decorative image."
+    },
+    "layout_plan": {
+      "zones": [
+        {
+          "name": "entrance_focus",
+          "x": 8,
+          "y": 1,
+          "w": 4,
+          "h": 3,
+          "purpose": "main focal point / gate / landmark"
+        },
+        {
+          "name": "mid_plaza",
+          "x": 7,
+          "y": 5,
+          "w": 6,
+          "h": 4,
+          "purpose": "main interaction area"
+        },
+        {
+          "name": "left_support",
+          "x": 1,
+          "y": 3,
+          "w": 6,
+          "h": 9,
+          "purpose": "vegetation / houses / props"
+        },
+        {
+          "name": "right_support",
+          "x": 13,
+          "y": 3,
+          "w": 6,
+          "h": 9,
+          "purpose": "vegetation / houses / props"
+        },
+        {
+          "name": "bottom_approach",
+          "x": 8,
+          "y": 10,
+          "w": 4,
+          "h": 4,
+          "purpose": "player entry / main path"
+        }
+      ],
+      "flow": [
+        {
+          "from": "bottom_approach",
+          "to": "mid_plaza",
+          "kind": "primary_path"
+        },
+        {
+          "from": "mid_plaza",
+          "to": "entrance_focus",
+          "kind": "visual_focal_flow"
+        }
+      ],
+      "walkable_logic": {
+        "primary_path_width_tiles": 2,
+        "path_bias": "centerline",
+        "blocking_rule": "keep focal approach readable and avoid decorative clutter on main route"
+      }
+    },
+    "tile_theme_selection": {
+      "tileset_name": "dark-ruins-base",
+      "palette": [
+        "#23253f",
+        "#5e4a62",
+        "#324838",
+        "#7a6d6a",
+        "#c7b469",
+        "#2d3549"
+      ],
+      "base_tiles": {
+        "ground": "moss_ground",
+        "path": "stone_path",
+        "water": "rune_pool",
+        "walls": "ruin_wall",
+        "roof": "temple_cap"
+      },
+      "hero_module": "temple_gate_module",
+      "prop_modules": [
+        "tree_cluster",
+        "rune_decals",
+        "stone_lamp",
+        "ruin_pillar"
+      ],
+      "selection_rationale": "Choose reusable tile/theme modules first, then compose scene with editable structures instead of generating a flattened image."
+    },
+    "scene_composition": {
+      "composition_rules": [
+        "keep central path readable",
+        "reserve top-center or mid-center as focal zone",
+        "use props to support path readability, not obscure it"
+      ],
+      "structures": [
+        {
+          "id": "hero_gate",
+          "kind": "landmark",
+          "x": 8,
+          "y": 1,
+          "w": 4,
+          "h": 3,
+          "module": "temple_gate_module"
+        }
+      ],
+      "props": [
+        {
+          "id": "tree_l_1",
+          "kind": "tree",
+          "x": 2,
+          "y": 4,
+          "module": "tree_cluster"
+        },
+        {
+          "id": "tree_r_1",
+          "kind": "tree",
+          "x": 17,
+          "y": 4,
+          "module": "tree_cluster"
+        },
+        {
+          "id": "runes",
+          "kind": "decal",
+          "x": 10,
+          "y": 5,
+          "module": "rune_decals"
+        }
+      ],
+      "layers": [
+        "ground",
+        "path",
+        "water",
+        "structures",
+        "props",
+        "collision"
+      ]
+    },
+    "export_targets": [
+      {
+        "kind": "layout_preview",
+        "path": "layout-preview.svg"
+      },
+      {
+        "kind": "tiled_json",
+        "path": "scene.tiled-project.tmj"
+      },
+      {
+        "kind": "scene_package",
+        "path": "scene-package.json"
+      }
+    ],
+    "asset_sources": {
+      "version": "v0.1",
+      "purpose": "Give the user one real next step for replacing placeholder modules with actual editable assets.",
+      "style_hint": "dark-fantasy",
+      "tileset_theme": "dark-ruins-base",
+      "recommended_sources": [
+        {
+          "role": "asset_library",
+          "name": "Kenney Assets",
+          "url": "https://www.kenney.nl/assets",
+          "use_for": [
+            "base tiles",
+            "props",
+            "placeholder replacement"
+          ]
+        },
+        {
+          "role": "layout_editor",
+          "name": "LDtk",
+          "url": "https://ldtk.io/",
+          "use_for": [
+            "open the exported map",
+            "edit pathing",
+            "swap tilesets",
+            "move objects"
+          ]
+        },
+        {
+          "role": "pixel_editor",
+          "name": "Pixelorama",
+          "url": "https://www.pixelorama.org/",
+          "use_for": [
+            "refine custom tiles",
+            "adjust palette",
+            "draw replacement modules"
+          ]
+        }
+      ],
+      "module_replacement_targets": [
+        {
+          "module": "temple_gate_module",
+          "replace_with": "hero landmark / gate / plaza core"
+        },
+        {
+          "module": "tree_cluster",
+          "replace_with": "support prop or environment module"
+        },
+        {
+          "module": "rune_decals",
+          "replace_with": "support prop or environment module"
+        },
+        {
+          "module": "stone_lamp",
+          "replace_with": "support prop or environment module"
+        },
+        {
+          "module": "ruin_pillar",
+          "replace_with": "support prop or environment module"
+        }
+      ],
+      "user_next_step": "Open scene.tiled-project.tmj in Tiled/LDtk-compatible workflow, replace tileset-placeholder.png with real assets, then adjust path/collision/objects before polish."
+    },
+    "editing_notes": [
+      "Replace tileset-placeholder.png with real tileset art or Kenney/Pixelorama derived assets.",
+      "Adjust collision and path layers first; polish visuals second.",
+      "Use the object layer modules as hooks for future asset generation or manual replacement.",
+      "Review layout-preview.svg first if the user is not comfortable reading raw map JSON."
+    ],
+    "tiled_map_summary": {
+      "layers": [
+        "ground",
+        "path",
+        "water",
+        "structures",
+        "collision",
+        "scene_objects"
+      ],
+      "tileset_theme": "dark-ruins-base"
+    }
+  }
+}

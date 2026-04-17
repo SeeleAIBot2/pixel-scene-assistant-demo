@@ -1,0 +1,26 @@
+{
+  "tileset_name": "jrpg-town-base",
+  "palette": [
+    "#6db2dc",
+    "#e8d18c",
+    "#72a85c",
+    "#ca9d69",
+    "#9f6243",
+    "#fff0ae"
+  ],
+  "base_tiles": {
+    "ground": "town_ground",
+    "path": "village_path",
+    "water": "canal_water",
+    "walls": "plaster_wall",
+    "roof": "town_roof"
+  },
+  "hero_module": "village_square_module",
+  "prop_modules": [
+    "water_feature",
+    "house_group",
+    "sign_board",
+    "barrel"
+  ],
+  "selection_rationale": "Choose reusable tile/theme modules first, then compose scene with editable structures instead of generating a flattened image."
+}

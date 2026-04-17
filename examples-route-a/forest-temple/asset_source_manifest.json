@@ -1,0 +1,62 @@
+{
+  "version": "v0.1",
+  "purpose": "Give the user one real next step for replacing placeholder modules with actual editable assets.",
+  "style_hint": "dark-fantasy",
+  "tileset_theme": "dark-ruins-base",
+  "recommended_sources": [
+    {
+      "role": "asset_library",
+      "name": "Kenney Assets",
+      "url": "https://www.kenney.nl/assets",
+      "use_for": [
+        "base tiles",
+        "props",
+        "placeholder replacement"
+      ]
+    },
+    {
+      "role": "layout_editor",
+      "name": "LDtk",
+      "url": "https://ldtk.io/",
+      "use_for": [
+        "open the exported map",
+        "edit pathing",
+        "swap tilesets",
+        "move objects"
+      ]
+    },
+    {
+      "role": "pixel_editor",
+      "name": "Pixelorama",
+      "url": "https://www.pixelorama.org/",
+      "use_for": [
+        "refine custom tiles",
+        "adjust palette",
+        "draw replacement modules"
+      ]
+    }
+  ],
+  "module_replacement_targets": [
+    {
+      "module": "temple_gate_module",
+      "replace_with": "hero landmark / gate / plaza core"
+    },
+    {
+      "module": "tree_cluster",
+      "replace_with": "support prop or environment module"
+    },
+    {
+      "module": "rune_decals",
+      "replace_with": "support prop or environment module"
+    },
+    {
+      "module": "stone_lamp",
+      "replace_with": "support prop or environment module"
+    },
+    {
+      "module": "ruin_pillar",
+      "replace_with": "support prop or environment module"
+    }
+  ],
+  "user_next_step": "Open scene.tiled-project.tmj in Tiled/LDtk-compatible workflow, replace tileset-placeholder.png with real assets, then adjust path/collision/objects before polish."
+}

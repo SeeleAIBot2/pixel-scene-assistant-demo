@@ -1,0 +1,23 @@
+{
+  "scene_id": "route_a_森林神殿入口-黄昏-像素风-俯视角-有苔藓石阶和发光符文",
+  "prompt": "森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文",
+  "style_hint": "dark-fantasy",
+  "camera_view": "top-down",
+  "mood": "神秘",
+  "variation": "base",
+  "target_tileset_theme": "dark-ruins-base",
+  "map_size_tiles": {
+    "width": 20,
+    "height": 14
+  },
+  "tile_size": 16,
+  "detected_features": [
+    "temple_gate",
+    "main_gate",
+    "rune_circle",
+    "stairs",
+    "tree_cluster",
+    "path"
+  ],
+  "design_goal": "Produce an editable pixel scene layout for tile-based iteration rather than a flattened decorative image."
+}

@@ -1,0 +1,429 @@
+{
+  "artifact_type": "route-a-scene-generator-output",
+  "generated_at": "2026-04-17T09:30:49.709980+00:00",
+  "scene_brief": {
+    "scene_id": "route_a_温暖村庄广场-白天-16-bit-治愈系-有喷泉和木屋",
+    "prompt": "温暖村庄广场，白天，16-bit，治愈系，有喷泉和木屋",
+    "style_hint": "jrpg-town",
+    "camera_view": "top-down",
+    "mood": "治愈",
+    "variation": "variant-a",
+    "target_tileset_theme": "jrpg-town-base",
+    "map_size_tiles": {
+      "width": 20,
+      "height": 14
+    },
+    "tile_size": 16,
+    "detected_features": [
+      "plaza",
+      "fountain",
+      "houses_cluster",
+      "main_gate",
+      "path"
+    ],
+    "design_goal": "Produce an editable pixel scene layout for tile-based iteration rather than a flattened decorative image."
+  },
+  "layout_plan": {
+    "zones": [
+      {
+        "name": "entrance_focus",
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 3,
+        "purpose": "main focal point / gate / landmark"
+      },
+      {
+        "name": "mid_plaza",
+        "x": 7,
+        "y": 5,
+        "w": 6,
+        "h": 4,
+        "purpose": "main interaction area"
+      },
+      {
+        "name": "left_support",
+        "x": 1,
+        "y": 3,
+        "w": 6,
+        "h": 9,
+        "purpose": "vegetation / houses / props"
+      },
+      {
+        "name": "right_support",
+        "x": 13,
+        "y": 3,
+        "w": 6,
+        "h": 9,
+        "purpose": "vegetation / houses / props"
+      },
+      {
+        "name": "bottom_approach",
+        "x": 8,
+        "y": 10,
+        "w": 4,
+        "h": 4,
+        "purpose": "player entry / main path"
+      }
+    ],
+    "flow": [
+      {
+        "from": "bottom_approach",
+        "to": "mid_plaza",
+        "kind": "primary_path"
+      },
+      {
+        "from": "mid_plaza",
+        "to": "entrance_focus",
+        "kind": "visual_focal_flow"
+      }
+    ],
+    "walkable_logic": {
+      "primary_path_width_tiles": 2,
+      "path_bias": "centerline",
+      "blocking_rule": "keep focal approach readable and avoid decorative clutter on main route"
+    }
+  },
+  "tile_theme_selection": {
+    "tileset_name": "jrpg-town-base",
+    "palette": [
+      "#6db2dc",
+      "#e8d18c",
+      "#72a85c",
+      "#ca9d69",
+      "#9f6243",
+      "#fff0ae"
+    ],
+    "base_tiles": {
+      "ground": "town_ground",
+      "path": "village_path",
+      "water": "canal_water",
+      "walls": "plaster_wall",
+      "roof": "town_roof"
+    },
+    "hero_module": "village_square_module",
+    "prop_modules": [
+      "water_feature",
+      "house_group",
+      "sign_board",
+      "barrel"
+    ],
+    "selection_rationale": "Choose reusable tile/theme modules first, then compose scene with editable structures instead of generating a flattened image."
+  },
+  "scene_composition": {
+    "composition_rules": [
+      "keep central path readable",
+      "reserve top-center or mid-center as focal zone",
+      "use props to support path readability, not obscure it"
+    ],
+    "structures": [
+      {
+        "id": "hero_gate",
+        "kind": "landmark",
+        "x": 8,
+        "y": 1,
+        "w": 4,
+        "h": 3,
+        "module": "village_square_module"
+      },
+      {
+        "id": "left_house",
+        "kind": "building",
+        "x": 2,
+        "y": 6,
+        "w": 3,
+        "h": 3,
+        "module": "house_group"
+      },
+      {
+        "id": "right_house",
+        "kind": "building",
+        "x": 15,
+        "y": 6,
+        "w": 3,
+        "h": 3,
+        "module": "house_group"
+      }
+    ],
+    "props": [
+      {
+        "id": "centerpiece",
+        "kind": "fountain",
+        "x": 10,
+        "y": 7,
+        "module": "water_feature"
+      }
+    ],
+    "layers": [
+      "ground",
+      "path",
+      "water",
+      "structures",
+      "props",
+      "collision"
+    ]
+  },
+  "editable_export": {
+    "editable_export_version": "v0.2",
+    "recommended_tools": [
+      "Tiled",
+      "LDtk",
+      "Pixelorama"
+    ],
+    "scene_brief": {
+      "scene_id": "route_a_温暖村庄广场-白天-16-bit-治愈系-有喷泉和木屋",
+      "prompt": "温暖村庄广场，白天，16-bit，治愈系，有喷泉和木屋",
+      "style_hint": "jrpg-town",
+      "camera_view": "top-down",
+      "mood": "治愈",
+      "variation": "variant-a",
+      "target_tileset_theme": "jrpg-town-base",
+      "map_size_tiles": {
+        "width": 20,
+        "height": 14
+      },
+      "tile_size": 16,
+      "detected_features": [
+        "plaza",
+        "fountain",
+        "houses_cluster",
+        "main_gate",
+        "path"
+      ],
+      "design_goal": "Produce an editable pixel scene layout for tile-based iteration rather than a flattened decorative image."
+    },
+    "layout_plan": {
+      "zones": [
+        {
+          "name": "entrance_focus",
+          "x": 8,
+          "y": 1,
+          "w": 4,
+          "h": 3,
+          "purpose": "main focal point / gate / landmark"
+        },
+        {
+          "name": "mid_plaza",
+          "x": 7,
+          "y": 5,
+          "w": 6,
+          "h": 4,
+          "purpose": "main interaction area"
+        },
+        {
+          "name": "left_support",
+          "x": 1,
+          "y": 3,
+          "w": 6,
+          "h": 9,
+          "purpose": "vegetation / houses / props"
+        },
+        {
+          "name": "right_support",
+          "x": 13,
+          "y": 3,
+          "w": 6,
+          "h": 9,
+          "purpose": "vegetation / houses / props"
+        },
+        {
+          "name": "bottom_approach",
+          "x": 8,
+          "y": 10,
+          "w": 4,
+          "h": 4,
+          "purpose": "player entry / main path"
+        }
+      ],
+      "flow": [
+        {
+          "from": "bottom_approach",
+          "to": "mid_plaza",
+          "kind": "primary_path"
+        },
+        {
+          "from": "mid_plaza",
+          "to": "entrance_focus",
+          "kind": "visual_focal_flow"
+        }
+      ],
+      "walkable_logic": {
+        "primary_path_width_tiles": 2,
+        "path_bias": "centerline",
+        "blocking_rule": "keep focal approach readable and avoid decorative clutter on main route"
+      }
+    },
+    "tile_theme_selection": {
+      "tileset_name": "jrpg-town-base",
+      "palette": [
+        "#6db2dc",
+        "#e8d18c",
+        "#72a85c",
+        "#ca9d69",
+        "#9f6243",
+        "#fff0ae"
+      ],
+      "base_tiles": {
+        "ground": "town_ground",
+        "path": "village_path",
+        "water": "canal_water",
+        "walls": "plaster_wall",
+        "roof": "town_roof"
+      },
+      "hero_module": "village_square_module",
+      "prop_modules": [
+        "water_feature",
+        "house_group",
+        "sign_board",
+        "barrel"
+      ],
+      "selection_rationale": "Choose reusable tile/theme modules first, then compose scene with editable structures instead of generating a flattened image."
+    },
+    "scene_composition": {
+      "composition_rules": [
+        "keep central path readable",
+        "reserve top-center or mid-center as focal zone",
+        "use props to support path readability, not obscure it"
+      ],
+      "structures": [
+        {
+          "id": "hero_gate",
+          "kind": "landmark",
+          "x": 8,
+          "y": 1,
+          "w": 4,
+          "h": 3,
+          "module": "village_square_module"
+        },
+        {
+          "id": "left_house",
+          "kind": "building",
+          "x": 2,
+          "y": 6,
+          "w": 3,
+          "h": 3,
+          "module": "house_group"
+        },
+        {
+          "id": "right_house",
+          "kind": "building",
+          "x": 15,
+          "y": 6,
+          "w": 3,
+          "h": 3,
+          "module": "house_group"
+        }
+      ],
+      "props": [
+        {
+          "id": "centerpiece",
+          "kind": "fountain",
+          "x": 10,
+          "y": 7,
+          "module": "water_feature"
+        }
+      ],
+      "layers": [
+        "ground",
+        "path",
+        "water",
+        "structures",
+        "props",
+        "collision"
+      ]
+    },
+    "export_targets": [
+      {
+        "kind": "layout_preview",
+        "path": "layout-preview.svg"
+      },
+      {
+        "kind": "tiled_json",
+        "path": "scene.tiled-project.tmj"
+      },
+      {
+        "kind": "scene_package",
+        "path": "scene-package.json"
+      }
+    ],
+    "asset_sources": {
+      "version": "v0.1",
+      "purpose": "Give the user one real next step for replacing placeholder modules with actual editable assets.",
+      "style_hint": "jrpg-town",
+      "tileset_theme": "jrpg-town-base",
+      "recommended_sources": [
+        {
+          "role": "asset_library",
+          "name": "Kenney Assets",
+          "url": "https://www.kenney.nl/assets",
+          "use_for": [
+            "base tiles",
+            "props",
+            "placeholder replacement"
+          ]
+        },
+        {
+          "role": "layout_editor",
+          "name": "Tiled",
+          "url": "https://www.mapeditor.org/",
+          "use_for": [
+            "open the exported map",
+            "edit pathing",
+            "swap tilesets",
+            "move objects"
+          ]
+        },
+        {
+          "role": "pixel_editor",
+          "name": "Pixelorama",
+          "url": "https://www.pixelorama.org/",
+          "use_for": [
+            "refine custom tiles",
+            "adjust palette",
+            "draw replacement modules"
+          ]
+        }
+      ],
+      "module_replacement_targets": [
+        {
+          "module": "village_square_module",
+          "replace_with": "hero landmark / gate / plaza core"
+        },
+        {
+          "module": "water_feature",
+          "replace_with": "support prop or environment module"
+        },
+        {
+          "module": "house_group",
+          "replace_with": "support prop or environment module"
+        },
+        {
+          "module": "sign_board",
+          "replace_with": "support prop or environment module"
+        },
+        {
+          "module": "barrel",
+          "replace_with": "support prop or environment module"
+        }
+      ],
+      "user_next_step": "Open scene.tiled-project.tmj in Tiled/LDtk-compatible workflow, replace tileset-placeholder.png with real assets, then adjust path/collision/objects before polish."
+    },
+    "editing_notes": [
+      "Replace tileset-placeholder.png with real tileset art or Kenney/Pixelorama derived assets.",
+      "Adjust collision and path layers first; polish visuals second.",
+      "Use the object layer modules as hooks for future asset generation or manual replacement.",
+      "Review layout-preview.svg first if the user is not comfortable reading raw map JSON."
+    ],
+    "tiled_map_summary": {
+      "layers": [
+        "ground",
+        "path",
+        "water",
+        "structures",
+        "collision",
+        "scene_objects"
+      ],
+      "tileset_theme": "jrpg-town-base"
+    }
+  }
+}

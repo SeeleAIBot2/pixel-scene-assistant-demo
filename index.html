@@ -6,16 +6,17 @@
   <title>Pixel Scene Assistant — Mock Demo</title>
   <style>
     :root {
-      --bg: #0f1220;
+      --bg: #0b0f1d;
       --panel: #171b2f;
-      --panel-2: #1f2540;
+      --panel2: #1f2540;
       --text: #eef2ff;
       --muted: #aab3d1;
       --accent: #7c5cff;
-      --accent-2: #36d1c4;
+      --accent2: #36d1c4;
       --border: #2c355f;
       --ok: #2dd4bf;
       --warn: #f59e0b;
+      --err: #ff6b6b;
     }
     * { box-sizing: border-box; }
     body {
@@ -24,851 +25,287 @@
       background: linear-gradient(180deg, #0b0f1d 0%, #10162b 100%);
       color: var(--text);
     }
-    .wrap {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 32px 20px 56px;
-    }
-    .hero {
-      margin-bottom: 24px;
-    }
+    .wrap { max-width: 1360px; margin: 0 auto; padding: 28px 20px 60px; }
     .eyebrow {
-      display: inline-block;
-      padding: 6px 10px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      color: var(--accent-2);
-      background: rgba(54,209,196,.08);
-      font-size: 12px;
-      margin-bottom: 12px;
+      display:inline-block; padding:6px 10px; border:1px solid var(--border); border-radius:999px;
+      color:var(--accent2); background:rgba(54,209,196,.08); font-size:12px;
     }
-    h1 {
-      margin: 0 0 10px;
-      font-size: 34px;
-      line-height: 1.15;
-    }
-    .sub {
-      color: var(--muted);
-      font-size: 16px;
-      max-width: 760px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 20px;
-      align-items: start;
-    }
+    h1 { margin: 12px 0 8px; font-size: 34px; }
+    .sub { color: var(--muted); max-width: 980px; line-height: 1.65; }
+    .toplinks { margin-top: 12px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .toplinks a { color: #8bd7ff; text-decoration: none; font-weight: 600; }
+    .layout { margin-top: 22px; display: grid; grid-template-columns: 360px 1fr; gap: 18px; align-items: start; }
     .card {
-      background: rgba(23,27,47,.92);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 18px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.22);
+      background: rgba(23,27,47,.94); border: 1px solid var(--border); border-radius: 18px;
+      padding: 16px; box-shadow: 0 16px 40px rgba(0,0,0,.22);
     }
-    .card h2 {
-      margin: 0 0 12px;
-      font-size: 18px;
+    .card h2 { margin: 0 0 12px; font-size: 18px; }
+    label { display:block; margin: 12px 0 8px; color: var(--muted); font-size: 13px; }
+    textarea, select, input, button, a.linkbtn {
+      width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--panel2); color: var(--text); font-size: 14px;
     }
-    label {
-      display: block;
-      margin: 12px 0 8px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-    textarea, select, input {
-      width: 100%;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--text);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 14px;
-      outline: none;
-    }
-    textarea { min-height: 124px; resize: vertical; }
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-top: 16px;
-      flex-wrap: wrap;
-    }
-    button {
-      border: 0;
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform .08s ease, opacity .2s ease;
-    }
-    button:hover { transform: translateY(-1px); }
-    button.primary { background: var(--accent); color: white; }
-    button.secondary { background: #263055; color: white; }
-    button.ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-    .hint, .status, .small {
-      font-size: 13px;
-      color: var(--muted);
-    }
-    .status {
-      margin-top: 12px;
-      min-height: 18px;
-    }
+    textarea { min-height: 130px; resize: vertical; }
+    .row { display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    button { cursor: pointer; border: 0; font-weight: 700; background: var(--accent); }
+    button.secondary { background: #263055; }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .status { margin-top: 12px; min-height: 20px; font-size: 13px; color: var(--muted); }
     .status.ok { color: var(--ok); }
     .status.warn { color: var(--warn); }
-    .result {
-      display: none;
-    }
-    .result.show {
-      display: block;
-    }
-    .result-panel {
-      background: #11162b;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 14px;
-    }
-    .mock-scene {
-      width: 100%;
-      aspect-ratio: 4/3;
-      border-radius: 14px;
-      border: 1px solid #39446f;
-      background: #0d1326;
-      margin-bottom: 12px;
-      position: relative;
-      overflow: hidden;
-    }
-    .mock-scene canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      background: #0b1020;
-    }
-    .badge {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      background: rgba(15,18,32,.8);
-      border: 1px solid rgba(255,255,255,.1);
-      color: #fff;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
-    }
-    .list {
-      margin: 8px 0 0;
-      padding-left: 18px;
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 8px;
-    }
-    .chip {
-      font-size: 12px;
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: #202948;
-      border: 1px solid var(--border);
-      color: #cbd5ff;
-      cursor: pointer;
-    }
-    .chip:hover { background: #2a3560; }
-    .footer-note {
-      margin-top: 14px;
-      padding-top: 12px;
-      border-top: 1px dashed var(--border);
-      color: var(--muted);
-      font-size: 13px;
-    }
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
-      h1 { font-size: 28px; }
-    }
+    .status.err { color: var(--err); }
+    .examples { display:flex; flex-wrap:wrap; gap:8px; margin-top: 12px; }
+    .chip { padding:8px 10px; border-radius: 999px; border:1px solid var(--border); background:#202948; color:#d7defc; font-size: 12px; cursor:pointer; }
+    .main { display:grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
+    .preview { background:#11162b; border:1px solid #39446f; border-radius:14px; overflow:hidden; min-height: 480px; }
+    .preview iframe { display:block; width:100%; min-height:480px; border:0; }
+    .meta { display:grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 10px; }
+    .pill { padding:8px 10px; background:#202948; border:1px solid var(--border); border-radius: 12px; font-size: 13px; color:#d7defc; }
+    pre { margin:0; white-space:pre-wrap; word-break:break-word; color:#d7defc; font-size:13px; line-height:1.55; }
+    .links { display:grid; gap:10px; margin-top: 12px; }
+    .linkbtn { text-decoration:none; display:block; text-align:center; }
+    .small { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    @media (max-width: 1080px) { .layout, .main { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="hero">
-      <div class="eyebrow">Step 2 Mock Demo · Pixel Scene Assistant</div>
-      <h1>AI 辅助像素场景制作</h1>
-      <div class="sub">这不是最终成品，只是一个<strong>可试用 mock demo</strong>：你可以输入场景需求，体验“草稿生成 → 变体 → refine”的基本交互，验证这项产物是不是朝着“制作辅助能力”在长，而不是停在单次出图。</div>
+    <div class="eyebrow">Pixel Scene Assistant · Mock Demo → Route A live package</div>
+    <h1>AI 辅助像素场景制作</h1>
+    <div class="sub">
+      继续沿用原来的 <strong>Pixel Scene Assistant — Mock Demo</strong> 页面，但现在不再只是 mock。
+      你可以直接在这里输入场景 brief，调用 <code>/api/route-a/generate</code> 真生成一份可继续生产的 scene package：
+      包含 layout preview、scene package、<code>.tmj</code>、handoff README 和 source hook。
+    </div>
+    <div class="toplinks">
+      <a href="./route-a-viewer.html" target="_blank" rel="noreferrer">打开样例 Viewer</a>
+      <a href="http://127.0.0.1:8031/health" target="_blank" rel="noreferrer">查看本地 API 健康</a>
     </div>
 
-    <div class="grid">
+    <div class="layout">
       <div class="card">
-        <h2>Scene Brief</h2>
-        <label for="scenePrompt">场景描述</label>
-        <textarea id="scenePrompt" placeholder="例如：森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文"></textarea>
+        <h2>Generate editable scene package</h2>
+        <label for="apiBase">Route A API</label>
+        <input id="apiBase" value="http://127.0.0.1:8031" />
+
+        <label for="prompt">Scene Brief</label>
+        <textarea id="prompt" placeholder="例如：森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文，想继续进 Tiled 编辑。"></textarea>
 
         <div class="row">
           <div>
-            <label for="styleHint">风格方向</label>
+            <label for="styleHint">Style</label>
             <select id="styleHint">
               <option value="cozy-16bit">Cozy 16-bit</option>
-              <option value="dark-fantasy">Dark Fantasy Pixel</option>
-              <option value="sci-fi-neon">Sci-Fi Neon Pixel</option>
-              <option value="jrpg-town">JRPG Town Scene</option>
+              <option value="dark-fantasy">Dark Fantasy</option>
+              <option value="jrpg-town">JRPG Town</option>
+              <option value="sci-fi-neon">Sci-Fi Neon</option>
             </select>
           </div>
           <div>
-            <label for="cameraView">视角</label>
+            <label for="cameraView">Camera</label>
             <select id="cameraView">
-              <option value="top-down">俯视 Top-down</option>
-              <option value="side-view">横版 Side-view</option>
-              <option value="isometric">等距 Isometric</option>
-              <option value="free">自由 Free</option>
+              <option value="top-down">Top-down</option>
+              <option value="side-view">Side-view</option>
+              <option value="isometric">Isometric</option>
             </select>
           </div>
         </div>
 
         <div class="row">
           <div>
-            <label for="mode">模式</label>
-            <select id="mode">
-              <option value="draft">Draft</option>
-              <option value="variant">Variant</option>
-              <option value="refine">Refine</option>
+            <label for="variation">Variation</label>
+            <select id="variation">
+              <option value="base">base</option>
+              <option value="variant-a">variant-a</option>
+              <option value="variant-b">variant-b</option>
+              <option value="refine">refine</option>
             </select>
           </div>
           <div>
-            <label for="mood">氛围</label>
-            <input id="mood" placeholder="温暖 / 神秘 / 压迫 / 治愈" />
+            <label for="mood">Mood</label>
+            <input id="mood" placeholder="如：mysterious / cozy / tense" />
           </div>
         </div>
 
-        <div class="row">
-          <div>
-            <label for="modelName">模型</label>
-            <select id="modelName">
-              <option value="nanobanana">Nano Banana</option>
-            </select>
-          </div>
-          <div>
-            <label for="apiBase">真实执行层 API</label>
-            <input id="apiBase" placeholder="http://127.0.0.1:8031" value="http://127.0.0.1:8031" />
-          </div>
+        <div style="display:grid; gap:10px; margin-top:16px;">
+          <button id="generateBtn">生成 Route A package</button>
+          <button id="healthBtn" class="secondary">检查 API 健康</button>
         </div>
 
-        <div class="row">
-          <div>
-            <label for="paletteSize">Palette 色数</label>
-            <input id="paletteSize" type="number" min="8" max="64" value="24" />
-          </div>
-          <div>
-            <label for="baseResolution">基础分辨率</label>
-            <select id="baseResolution">
-              <option value="128x96">128x96</option>
-              <option value="160x120" selected>160x120</option>
-              <option value="192x144">192x144</option>
-              <option value="256x192">256x192</option>
-            </select>
-          </div>
+        <div class="examples">
+          <div class="chip" data-prompt="森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文，适合独立游戏关卡继续编辑。" data-style="dark-fantasy" data-camera="top-down">森林神殿</div>
+          <div class="chip" data-prompt="温暖村庄广场，白天，16-bit，治愈系，有喷泉和木屋，适合继续换 tileset 和路径布局。" data-style="cozy-16bit" data-camera="top-down">温暖村庄</div>
+          <div class="chip" data-prompt="赛博街区入口，夜晚，俯视角，霓虹招牌、能量水渠和检查点，适合继续做任务路线和阻挡。" data-style="sci-fi-neon" data-camera="top-down">赛博街区</div>
         </div>
 
-        <div class="row">
-          <div>
-            <label for="upscale">放大倍数</label>
-            <select id="upscale">
-              <option value="3">3x</option>
-              <option value="4" selected>4x</option>
-              <option value="5">5x</option>
-              <option value="6">6x</option>
-            </select>
-          </div>
-          <div>
-            <label for="seedInput">Seed（可选）</label>
-            <input id="seedInput" type="number" placeholder="留空 = 随机" />
-          </div>
-        </div>
-
-        <label for="referenceImages">Reference Images（每行一个 URL，可选）</label>
-        <textarea id="referenceImages" placeholder="可粘贴像素风参考图 / 构图参考图 / 上一版结果图 URL，用于 variant / refine"></textarea>
-
-        <label for="promptPreview">Prompt Builder 预览</label>
-        <div style="background:#11162b; border:1px solid var(--border); border-radius:12px; padding:12px; overflow-x:auto;">
-          <pre style="margin:0; font-size:12px; color:var(--muted); white-space: pre-wrap;" id="promptPreview">等待输入后生成 prompt builder 预览</pre>
-        </div>
-
-        <div class="actions">
-          <button class="primary" id="generateBtn">生成 mock 草稿</button>
-          <button class="secondary" id="variantBtn">来一版变体</button>
-          <button class="secondary" id="refineBtn">按当前结果 refine</button>
-          <button class="secondary" id="loadRealSampleBtn">加载真实样例</button>
-          <button class="ghost" id="resetBtn">重置</button>
-        </div>
-
-        <div class="status" id="status"></div>
-
-        <div class="footer-note">
-          <div class="small">快速试用：</div>
-          <div class="small" style="margin-top:6px;">现在支持两种路径：1）加载固定真实样例；2）如果 API 可用，则 draft / variant / refine 会走 <strong>真实 Nano Banana + 像素化</strong> 执行层，而不再只是固定样例。</div>
-          <div class="chips">
-            <div class="chip" data-prompt="森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文">森林神殿</div>
-            <div class="chip" data-prompt="温暖村庄广场，白天，16-bit，治愈系，有喷泉和木屋">治愈村庄</div>
-            <div class="chip" data-prompt="赛博朋克街道，夜晚，霓虹灯，像素风，雨后反光地面">赛博街道</div>
-          </div>
+        <div id="status" class="status">等待生成。</div>
+        <div class="small" style="margin-top:12px;">
+          当前验收口径不是“出了几个文件”，而是：用户拿到后能立刻继续做事。<br>
+          1) 看懂 layout / zoning / 主路径<br>
+          2) 打开 <code>.tmj</code> 继续改布局 / blocking<br>
+          3) 用 source manifest 替换真实 tileset / 模块
         </div>
       </div>
 
-      <div class="card result" id="resultCard">
-        <h2>Mock Output</h2>
-        <div class="result-panel">
-          <div class="mock-scene" id="mockScene">
-            <canvas id="sceneCanvas" width="64" height="48" aria-label="pixel scene preview"></canvas>
-            <div class="badge" id="sceneBadge">Draft</div>
+      <div class="main">
+        <div class="card">
+          <h2>Layout preview / package preview</h2>
+          <div class="preview"><iframe id="previewFrame" title="preview"></iframe></div>
+          <div class="meta">
+            <div class="pill" id="sceneId">scene_id: -</div>
+            <div class="pill" id="theme">tileset_theme: -</div>
+            <div class="pill" id="features">features: -</div>
+            <div class="pill" id="tooling">tooling: -</div>
           </div>
-          <div><strong id="resultTitle">等待生成</strong></div>
-          <div class="small" id="resultSummary">生成后会在这里显示 mock 结果摘要。</div>
-          <ul class="list" id="nextActions"></ul>
         </div>
 
-        <div style="margin-top:16px;" class="card">
-          <h2>Scene Spec</h2>
-          <div style="background:#11162b; border:1px solid var(--border); border-radius:12px; padding:12px; overflow-x:auto;">
-            <pre style="margin:0; font-size:12px; color:var(--muted); white-space: pre-wrap;" id="sceneSpec">等待生成后显示结构化场景规格</pre>
+        <div class="card">
+          <h2>What user can do next</h2>
+          <pre id="summaryBox">先生成一份 package。生成后，这里会直接告诉你：这个产物在策划 / 美术 / 开发场景里分别能干什么，以及现在还缺什么。</pre>
+          <div class="links">
+            <a id="openPreview" class="linkbtn" target="_blank" rel="noreferrer">打开 preview.html</a>
+            <a id="openTiled" class="linkbtn" target="_blank" rel="noreferrer">打开 scene.tiled-project.tmj</a>
+            <a id="openReadme" class="linkbtn" target="_blank" rel="noreferrer">打开 README.md</a>
+            <a id="openPackage" class="linkbtn" target="_blank" rel="noreferrer">打开 scene-package.json</a>
           </div>
-          <div class="actions" style="margin-top:12px; gap:8px;">
-            <button class="secondary" id="exportSpecBtn" disabled>导出 Scene Spec (JSON)</button>
-            <button class="secondary" id="exportPackageBtn" disabled>导出 Scene Package</button>
-          </div>
-          <div class="small" style="margin-top:8px; color:var(--muted);">导出的 package 包含场景规格、生成参数、mock 资产和下游生产所需的元数据，可直接导入后续制作流程。</div>
         </div>
       </div>
     </div>
   </div>
 
   <script>
-    const scenePrompt = document.getElementById('scenePrompt');
-    const styleHint = document.getElementById('styleHint');
-    const cameraView = document.getElementById('cameraView');
-    const mood = document.getElementById('mood');
-    const mode = document.getElementById('mode');
-    const modelName = document.getElementById('modelName');
     const apiBase = document.getElementById('apiBase');
-    const paletteSize = document.getElementById('paletteSize');
-    const baseResolution = document.getElementById('baseResolution');
-    const upscale = document.getElementById('upscale');
-    const seedInput = document.getElementById('seedInput');
-    const referenceImages = document.getElementById('referenceImages');
-    const promptPreview = document.getElementById('promptPreview');
+    const promptEl = document.getElementById('prompt');
+    const styleHintEl = document.getElementById('styleHint');
+    const cameraViewEl = document.getElementById('cameraView');
+    const variationEl = document.getElementById('variation');
+    const moodEl = document.getElementById('mood');
+    const statusEl = document.getElementById('status');
     const generateBtn = document.getElementById('generateBtn');
-    const variantBtn = document.getElementById('variantBtn');
-    const refineBtn = document.getElementById('refineBtn');
-    const loadRealSampleBtn = document.getElementById('loadRealSampleBtn');
-    const resetBtn = document.getElementById('resetBtn');
-    const status = document.getElementById('status');
-    const resultCard = document.getElementById('resultCard');
-    const mockScene = document.getElementById('mockScene');
-    const sceneCanvas = document.getElementById('sceneCanvas');
-    const sceneCtx = sceneCanvas.getContext('2d', { alpha: false });
-    const sceneBadge = document.getElementById('sceneBadge');
-    const resultTitle = document.getElementById('resultTitle');
-    const resultSummary = document.getElementById('resultSummary');
-    const nextActions = document.getElementById('nextActions');
-    const sceneSpec = document.getElementById('sceneSpec');
-    const exportSpecBtn = document.getElementById('exportSpecBtn');
-    const exportPackageBtn = document.getElementById('exportPackageBtn');
-    
-    let currentScene = null;
-    let liveApiHealthy = false;
+    const healthBtn = document.getElementById('healthBtn');
+    const previewFrame = document.getElementById('previewFrame');
+    const sceneId = document.getElementById('sceneId');
+    const theme = document.getElementById('theme');
+    const features = document.getElementById('features');
+    const tooling = document.getElementById('tooling');
+    const summaryBox = document.getElementById('summaryBox');
+    const openPreview = document.getElementById('openPreview');
+    const openTiled = document.getElementById('openTiled');
+    const openReadme = document.getElementById('openReadme');
+    const openPackage = document.getElementById('openPackage');
 
-    const palettes = {
-      'cozy-16bit': {
-        skyTop: '#6c8fda', skyBottom: '#d6c37a', ground: '#5e9d65', path: '#b88b5a',
-        water: '#4b7fd1', foliage: '#3f7a42', wall: '#8c745d', roof: '#b85c4a', light: '#f8e38b'
-      },
-      'dark-fantasy': {
-        skyTop: '#23253f', skyBottom: '#67405f', ground: '#2e4b38', path: '#6e4b3a',
-        water: '#35527b', foliage: '#274a30', wall: '#6f6772', roof: '#5c2f3f', light: '#d6b85a'
-      },
-      'sci-fi-neon': {
-        skyTop: '#101634', skyBottom: '#3d2b7a', ground: '#20263d', path: '#44506b',
-        water: '#0fa6c6', foliage: '#185b53', wall: '#596480', roof: '#ff499e', light: '#fcf951'
-      },
-      'jrpg-town': {
-        skyTop: '#6cb3d8', skyBottom: '#e5d28e', ground: '#6ea35c', path: '#c59a62',
-        water: '#5b8fdc', foliage: '#4e7c42', wall: '#d8c1a3', roof: '#9d6242', light: '#fff0a8'
+    function setStatus(text, kind = '') {
+      statusEl.textContent = text;
+      statusEl.className = 'status' + (kind ? ' ' + kind : '');
+    }
+
+    async function checkHealth() {
+      try {
+        setStatus('检查 API 中…');
+        const res = await fetch(apiBase.value.replace(/\/$/, '') + '/health');
+        const data = await res.json();
+        if (!data.ok) throw new Error('health not ok');
+        setStatus('API 正常：' + JSON.stringify(data.capabilities || []), 'ok');
+      } catch (err) {
+        setStatus('API 不可用：' + err.message, 'err');
       }
-    };
-
-    function setStatus(text, type = '') {
-      status.textContent = text;
-      status.className = 'status' + (type ? ' ' + type : '');
     }
 
-    function splitReferenceImages() {
-      return referenceImages.value
-        .split(/\n+/)
-        .map(v => v.trim())
-        .filter(Boolean);
-    }
+    function applyResult(data) {
+      const pkg = data.scenePackage || {};
+      const brief = pkg.scene_brief || {};
+      const edit = pkg.editable_export || {};
+      const api = (data.api_base || apiBase.value).replace(/\/$/, '');
+      const assets = data.assets || {};
+      sceneId.textContent = 'scene_id: ' + (brief.scene_id || '-');
+      theme.textContent = 'tileset_theme: ' + ((pkg.tile_theme_selection || {}).tileset_name || '-');
+      features.textContent = 'features: ' + ((brief.detected_features || []).join(', ') || '-');
+      tooling.textContent = 'tooling: ' + ((edit.recommended_tools || []).join(', ') || '-');
 
-    function buildPromptPreviewText(actionMode = mode.value) {
-      const prompt = scenePrompt.value.trim() || '未提供场景描述';
-      const style = styleHint.value;
-      const camera = cameraView.value;
-      const moodText = mood.value.trim() || 'default';
-      const refs = splitReferenceImages();
-      const refText = refs.length ? `参考图 ${refs.length} 张` : '无参考图';
-      return [
-        `model=${modelName.value}`,
-        `mode=${actionMode}`,
-        `style=${style}`,
-        `camera=${camera}`,
-        `mood=${moodText}`,
-        `palette=${paletteSize.value} colors`,
-        `base=${baseResolution.value}`,
-        `upscale=${upscale.value}x`,
-        `${refText}`,
+      const previewUrl = assets['preview.html'] ? api + assets['preview.html'] : '';
+      const tiledUrl = assets['scene.tiled-project.tmj'] ? api + assets['scene.tiled-project.tmj'] : '';
+      const readmeUrl = assets['README.md'] ? api + assets['README.md'] : '';
+      const packageUrl = assets['scene-package.json'] ? api + assets['scene-package.json'] : '';
+      previewFrame.src = previewUrl || 'about:blank';
+      openPreview.href = previewUrl || '#';
+      openTiled.href = tiledUrl || '#';
+      openReadme.href = readmeUrl || '#';
+      openPackage.href = packageUrl || '#';
+
+      const layers = (((edit.tiled_map_summary || {}).layers) || []).join(', ');
+      const assetHooks = data.assetSourceManifest || {};
+      const sources = assetHooks.recommended_sources || [];
+      const assetLib = (sources.find((item) => item.role === 'asset_library') || {}).name || 'asset library';
+      const editor = (sources.find((item) => item.role === 'layout_editor') || {}).name || 'Tiled';
+      const pixelEditor = (sources.find((item) => item.role === 'pixel_editor') || {}).name || 'Pixelorama';
+
+      summaryBox.textContent = [
+        '用户拿到这份产物后，可以继续做什么：',
         '',
-        `Scene brief: ${prompt}`,
+        '对策划：',
+        '- 看 layout / zoning / 主路径，判断这个场景是否能承接玩法与任务流',
+        '- 直接调整 blockout，而不是重新讲一遍概念图应该长什么样',
         '',
-        `Prompt builder intent: pixel-art game environment, readable composition, limited palette feeling, clear silhouettes, tile-friendly structure.`
+        '对美术：',
+        '- 用 ' + assetLib + ' 或自有素材替换 placeholder tileset',
+        '- 在 ' + pixelEditor + ' 里继续改 palette / props / 模块细节',
+        '',
+        '对开发：',
+        '- 在 ' + editor + ' / LDtk 打开 .tmj 继续改 path / blocking / objects',
+        '- 把 layout 继续接进 Godot / Unity 的 tile-based workflow',
+        '',
+        '这次生成的结构要点：',
+        '- detected_features: ' + ((brief.detected_features || []).join(', ') || '-'),
+        '- layers: ' + (layers || '-'),
+        '- next step: 先改路径与阻挡，再换真实 tileset，最后接工程',
       ].join('\n');
     }
 
-    function refreshPromptPreview(actionMode = mode.value) {
-      promptPreview.textContent = buildPromptPreviewText(actionMode);
-    }
-
-    async function probeLiveApi() {
-      const url = `${apiBase.value.replace(/\/$/, '')}/health`;
-      try {
-        const resp = await fetch(url, { method: 'GET' });
-        liveApiHealthy = resp.ok;
-      } catch (_) {
-        liveApiHealthy = false;
+    async function generate() {
+      const prompt = promptEl.value.trim();
+      if (!prompt) {
+        setStatus('先写一句场景 brief。', 'warn');
+        return;
       }
-      return liveApiHealthy;
-    }
-
-    function generateSceneSpec(prompt, style, camera, mood, mode) {
-      const keywords = prompt.split(/\s+|，|。|,/).filter(v => v.length > 1);
-      const commonElements = ["地面", "建筑", "植被", "光源", "路径", "装饰", "地形"];
-      const detectedElements = commonElements.filter(el => prompt.includes(el) || keywords.some(k => k.includes(el)));
-      
-      const paletteSuggestions = {
-        'cozy-16bit': ["#3d6cb9", "#5ec2a6", "#d9c27a", "#729e6a", "#c9745a"],
-        'dark-fantasy': ["#1f233b", "#43306b", "#7b3131", "#5a2b75", "#30644e"],
-        'sci-fi-neon': ["#101634", "#3d2b7a", "#0fa6c6", "#ff499e", "#fcf951"],
-        'jrpg-town': ["#467f54", "#d6a566", "#6cb3d8", "#9e76c9", "#c9d373"]
-      };
-      
-      return {
-        spec_version: "v0.1",
-        scene_id: `scene_${Date.now()}`,
-        mode,
-        brief: {
-          prompt,
-          style_hint: style,
-          camera_view: camera,
-          mood: mood || 'default'
-        },
-        analysis: {
-          detected_elements: detectedElements.length ? detectedElements : ["通用像素场景元素"],
-          recommended_resolution: camera === 'top-down' ? "320x240 (16x16 tiles)" : "640x360 (32x32 tiles)",
-          palette_suggestion: paletteSuggestions[style] || paletteSuggestions['cozy-16bit'],
-          tile_size_suggestion: camera === 'top-down' ? 16 : 32
-        },
-        export_metadata: {
-          generated_at: new Date().toISOString(),
-          source: "Pixel Scene Assistant v0.1",
-          supported_workflows: ["Godot", "Tiled", "Aseprite", "Unity pixel art"]
-        }
-      };
-    }
-    
-    function fakeResponse(actionMode) {
-      const prompt = scenePrompt.value.trim() || '未提供场景描述';
-      const style = styleHint.value;
-      const camera = cameraView.value;
-      const moodText = mood.value.trim() || '未指定氛围';
-
-      const labels = {
-        draft: 'Draft',
-        variant: 'Variant',
-        refine: 'Refine'
-      };
-
-      const nexts = {
-        draft: [
-          '继续生成 2~3 个变体，探索更合适的场景方向',
-          '替换局部元素，比如入口、光源、植被或地面材质',
-          '确认这一版是否能作为游戏场景制作草稿继续推进'
-        ],
-        variant: [
-          '比较当前变体与上一版，保留构图更好的方案',
-          '锁定喜欢的风格后进入 refine，减少随机漂移',
-          '尝试加入更具体的制作约束，如 tile 感、边界层次或路径结构'
-        ],
-        refine: [
-          '基于当前结果继续微调局部结构和氛围',
-          '将这一版导出为制作参考图或继续拆分为后续资产',
-          '确认是否已足够支撑你的下一步场景制作'
-        ]
-      };
-
-      const spec = generateSceneSpec(prompt, style, camera, moodText, actionMode);
-      
-      return {
-        ok: true,
-        mode: actionMode,
-        title: `${labels[actionMode]} · ${prompt.slice(0, 26)}${prompt.length > 26 ? '…' : ''}`,
-        summary: `已按 ${style} / ${camera} / ${moodText} 生成一版程序化像素场景 ${labels[actionMode].toLowerCase()}。这版不再是渐变占位，而是基于 scene spec 的前端像素场景草稿，用来先验证“像素场景感”和可迭代性。`,
-        promptUsed: prompt,
-        nextActions: nexts[actionMode],
-        sceneSpec: spec,
-        scenePackage: {
-          spec,
-          mock_assets: [
-            { name: "scene_draft.png", type: "image", url: "mock://scene-draft" },
-            { name: "palette.json", type: "metadata", data: spec.analysis.palette_suggestion },
-            { name: "export_manifest.json", type: "metadata", data: spec.export_metadata }
-          ]
-        }
-      };
-    }
-
-    function hashSeed(str) {
-      let h = 2166136261;
-      for (let i = 0; i < str.length; i++) {
-        h ^= str.charCodeAt(i);
-        h = Math.imul(h, 16777619);
-      }
-      return h >>> 0;
-    }
-
-    function makeRng(seed) {
-      let s = seed >>> 0;
-      return () => {
-        s = (1664525 * s + 1013904223) >>> 0;
-        return s / 4294967296;
-      };
-    }
-
-    function fillRect(x, y, w, h, color) {
-      sceneCtx.fillStyle = color;
-      sceneCtx.fillRect(Math.floor(x), Math.floor(y), Math.floor(w), Math.floor(h));
-    }
-
-    function drawTree(x, y, p, rng) {
-      fillRect(x + 1, y + 4, 2, 4, p.wall);
-      fillRect(x, y + 1, 4, 4, p.foliage);
-      if (rng() > 0.5) fillRect(x + 1, y, 2, 2, p.light);
-    }
-
-    function drawHouse(x, y, p, rng) {
-      fillRect(x, y + 3, 8, 6, p.wall);
-      fillRect(x + 1, y + 1, 6, 3, p.roof);
-      fillRect(x + 3, y + 5, 2, 4, '#473524');
-      fillRect(x + 1, y + 5, 1, 1, p.light);
-      fillRect(x + 6, y + 5, 1, 1, p.light);
-      if (rng() > 0.65) fillRect(x + 7, y + 2, 1, 2, '#d9d9d9');
-    }
-
-    function drawTower(x, y, p) {
-      fillRect(x + 2, y, 4, 2, p.roof);
-      fillRect(x + 1, y + 2, 6, 9, p.wall);
-      fillRect(x + 3, y + 6, 2, 5, '#433329');
-      fillRect(x + 2, y + 4, 1, 1, p.light);
-      fillRect(x + 5, y + 4, 1, 1, p.light);
-    }
-
-    function drawWaterStrip(y, p) {
-      for (let x = 0; x < 64; x += 2) {
-        fillRect(x, y + (x % 4 === 0 ? 0 : 1), 2, 5, p.water);
-      }
-    }
-
-    function drawPath(camera, p) {
-      if (camera === 'side-view') {
-        fillRect(0, 39, 64, 5, p.path);
-      } else if (camera === 'isometric') {
-        for (let i = 0; i < 12; i++) fillRect(28 - i, 20 + i, 8 + i * 2, 1, p.path);
-      } else {
-        for (let i = 0; i < 18; i++) fillRect(30 - Math.floor(i / 3), 22 + i, 6 + Math.floor(i / 2), 1, p.path);
-      }
-    }
-
-    function drawSceneFromSpec(spec) {
-      const seed = hashSeed(JSON.stringify(spec.brief) + spec.mode);
-      const rng = makeRng(seed);
-      const p = palettes[spec.brief.style_hint] || palettes['cozy-16bit'];
-      const camera = spec.brief.camera_view;
-      const prompt = (spec.brief.prompt || '').toLowerCase();
-
-      fillRect(0, 0, 64, 24, p.skyTop);
-      fillRect(0, 24, 64, 10, p.skyBottom);
-      fillRect(0, 34, 64, 14, p.ground);
-
-      if (prompt.includes('夜') || prompt.includes('neon') || prompt.includes('赛博')) {
-        fillRect(49, 4, 4, 4, p.light);
-        fillRect(50, 5, 2, 2, '#fff6c9');
-      } else {
-        fillRect(50, 5, 6, 6, p.light);
-      }
-
-      drawPath(camera, p);
-
-      if (prompt.includes('水') || prompt.includes('河') || prompt.includes('湖') || prompt.includes('雨')) {
-        drawWaterStrip(camera === 'side-view' ? 41 : 36, p);
-      }
-
-      if (camera === 'side-view') {
-        for (let i = 0; i < 4; i++) drawHouse(6 + i * 14, 24 + Math.floor(rng() * 3), p, rng);
-      } else if (camera === 'isometric') {
-        drawHouse(12, 22, p, rng);
-        drawHouse(40, 18, p, rng);
-        drawTower(26, 14, p);
-      } else {
-        drawHouse(8, 18, p, rng);
-        drawHouse(44, 16, p, rng);
-        if (prompt.includes('神殿') || prompt.includes('寺') || prompt.includes('塔')) drawTower(27, 12, p);
-      }
-
-      for (let i = 0; i < 8; i++) {
-        const x = Math.floor(rng() * 58);
-        const y = 23 + Math.floor(rng() * 18);
-        drawTree(x, y, p, rng);
-      }
-
-      if (prompt.includes('霓虹') || prompt.includes('赛博')) {
-        for (let i = 0; i < 7; i++) {
-          fillRect(6 + i * 8, 19 + (i % 2), 3, 1, i % 2 ? p.roof : p.light);
-        }
-      }
-
-      if (prompt.includes('符文') || prompt.includes('魔法')) {
-        for (let i = 0; i < 5; i++) fillRect(24 + i * 3, 29 + (i % 2), 1, 1, p.light);
-      }
-
-      if (spec.mode === 'variant') {
-        for (let i = 0; i < 14; i++) fillRect(Math.floor(rng() * 64), Math.floor(rng() * 12), 1, 1, '#ffffff');
-      }
-
-      if (spec.mode === 'refine') {
-        for (let i = 0; i < 6; i++) fillRect(10 + i * 8, 32 + (i % 2), 2, 1, '#e8e0c8');
-      }
-    }
-
-    function drawPreviewImage(url) {
-      return new Promise((resolve, reject) => {
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = () => {
-          sceneCtx.imageSmoothingEnabled = false;
-          sceneCtx.clearRect(0, 0, sceneCanvas.width, sceneCanvas.height);
-          sceneCtx.drawImage(img, 0, 0, sceneCanvas.width, sceneCanvas.height);
-          resolve();
-        };
-        img.onerror = reject;
-        img.src = url;
-      });
-    }
-
-    async function renderResult(payload) {
-      currentScene = payload;
-      sceneCtx.imageSmoothingEnabled = false;
-      if (payload.realPreview) {
-        await drawPreviewImage(payload.realPreview);
-      } else {
-        drawSceneFromSpec(payload.sceneSpec);
-      }
-      sceneBadge.textContent = payload.mode;
-      resultTitle.textContent = payload.title;
-      resultSummary.textContent = payload.summary;
-      nextActions.innerHTML = payload.nextActions.map(v => `<li>${v}</li>`).join('');
-      sceneSpec.textContent = JSON.stringify(payload.sceneSpec, null, 2);
-      exportSpecBtn.disabled = false;
-      exportPackageBtn.disabled = false;
-      resultCard.classList.add('show');
-    }
-
-    async function runLive(actionMode) {
-      const refs = splitReferenceImages();
-      const previousRemote = currentScene?.sceneSpec?.export_metadata?.remote_image_url
-        || currentScene?.scenePackage?.spec?.export_metadata?.remote_image_url
-        || currentScene?.scenePackage?.spec?.export_metadata?.remote_image_url;
-      if ((actionMode === 'variant' || actionMode === 'refine') && previousRemote && !refs.includes(previousRemote)) {
-        refs.unshift(previousRemote);
-      }
-      const body = {
-        prompt: scenePrompt.value.trim(),
-        style_hint: styleHint.value,
-        camera_view: cameraView.value,
-        mood: mood.value.trim(),
-        mode: actionMode,
-        model: modelName.value,
-        palette_size: Number(paletteSize.value || 24),
-        base_resolution: baseResolution.value,
-        upscale: Number(upscale.value || 4),
-        reference_images: refs,
-      };
-      if (seedInput.value.trim()) body.seed = Number(seedInput.value);
-
-      const resp = await fetch(`${apiBase.value.replace(/\/$/, '')}/api/generate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      });
-      const data = await resp.json();
-      if (!resp.ok || !data.ok) throw new Error(data.error || 'real generation failed');
-      const apiRoot = apiBase.value.replace(/\/$/, '');
-      return {
-        ok: true,
-        mode: actionMode,
-        title: `${actionMode} · Real Generation`,
-        summary: `已通过真实执行层完成 ${actionMode}：Nano Banana 生成 + pixelization + palette reduction。当前不是固定样例，而是按你本次输入实时生成。`,
-        nextActions: [
-          '如果构图方向对了，继续 variant 看更多方案',
-          '如果主体对了但细节不稳，继续 refine',
-          '可继续增加 reference image，进一步锁视角、构图和材质语言'
-        ],
-        sceneSpec: data.sceneSpec,
-        scenePackage: data.scenePackage,
-        realPreview: `${apiRoot}${data.assets.preview}`,
-        realOriginal: `${apiRoot}${data.assets.original}`
-      };
-    }
-
-    async function run(actionMode) {
-      mode.value = actionMode;
-      refreshPromptPreview(actionMode);
-      setStatus('正在尝试真实生成…', 'warn');
       generateBtn.disabled = true;
-      variantBtn.disabled = true;
-      refineBtn.disabled = true;
+      setStatus('Route A 生成中…会落出 preview + .tmj + package。', 'warn');
       try {
-        const healthy = await probeLiveApi();
-        if (healthy && scenePrompt.value.trim()) {
-          const payload = await runLive(actionMode);
-          await renderResult(payload);
-          setStatus(`real ${actionMode} 已完成。当前结果来自真实执行层。`, 'ok');
-        } else {
-          if (!scenePrompt.value.trim()) throw new Error('请先输入场景描述');
-          await new Promise(r => setTimeout(r, 400));
-          const payload = fakeResponse(actionMode);
-          await renderResult(payload);
-          setStatus(`真实执行层不可用，已回退到 mock ${actionMode}。`, 'warn');
+        const base = apiBase.value.replace(/\/$/, '');
+        const res = await fetch(base + '/api/route-a/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt,
+            style_hint: styleHintEl.value,
+            camera_view: cameraViewEl.value,
+            variation: variationEl.value,
+            mood: moodEl.value.trim()
+          })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || ('HTTP ' + res.status));
         }
+        applyResult(data);
+        setStatus('生成完成。现在这份 package 已经可以给你点开体验。', 'ok');
       } catch (err) {
-        console.error(err);
-        const payload = fakeResponse(actionMode);
-        await renderResult(payload);
-        setStatus(`真实执行层失败，已回退 mock：${err.message || err}`, 'warn');
+        setStatus('生成失败：' + err.message, 'err');
       } finally {
         generateBtn.disabled = false;
-        variantBtn.disabled = false;
-        refineBtn.disabled = false;
       }
     }
 
-    async function loadRealSample() {
-      setStatus('正在加载真实样例…', 'warn');
-      loadRealSampleBtn.disabled = true;
-      try {
-        const [pkgResp, specResp] = await Promise.all([
-          fetch('./examples/real-sample-package.json'),
-          fetch('./examples/real-sample-spec.json')
-        ]);
-        const pkg = await pkgResp.json();
-        const spec = await specResp.json();
-        const payload = {
-          ok: true,
-          mode: 'Real Sample',
-          title: 'Real Sample · Nano Banana + Pixelization',
-          summary: '这是一组真实 Nano Banana 生成后，再经过降采样、限色和 nearest-neighbor 放大的像素场景样例。它不是前端程序画出来的，而是真实生成链路的输出。',
-          nextActions: [
-            '对照 mock renderer 与真实样例，判断真实链路的像素场景感是否更接近可生产资产',
-            '下一步可继续加参考图、变体策略和更细的 palette control',
-            '若要把 demo 完全变成真生成工具，还需要补后端/API 执行层'
-          ],
-          sceneSpec: spec,
-          scenePackage: pkg,
-          realPreview: './examples/real-sample-preview.png'
-        };
-        await renderResult(payload);
-        setStatus('真实样例已加载。当前画面来自 Nano Banana + pixelization 真链路。', 'ok');
-      } catch (err) {
-        console.error(err);
-        setStatus('真实样例加载失败，请刷新后重试。', 'warn');
-      } finally {
-        loadRealSampleBtn.disabled = false;
-      }
-    }
-
-    generateBtn.addEventListener('click', () => run('draft'));
-    variantBtn.addEventListener('click', () => run('variant'));
-    refineBtn.addEventListener('click', () => run('refine'));
-    loadRealSampleBtn.addEventListener('click', () => loadRealSample());
-    [scenePrompt, styleHint, cameraView, mood, mode, modelName, apiBase, paletteSize, baseResolution, upscale, seedInput, referenceImages].forEach(el => {
-      el.addEventListener('input', () => refreshPromptPreview());
-      el.addEventListener('change', () => refreshPromptPreview());
-    });
-    resetBtn.addEventListener('click', () => {
-      scenePrompt.value = '';
-      mood.value = '';
-      mode.value = 'draft';
-      referenceImages.value = '';
-      seedInput.value = '';
-      paletteSize.value = '24';
-      baseResolution.value = '160x120';
-      upscale.value = '4';
-      resultCard.classList.remove('show');
-      currentScene = null;
-      exportSpecBtn.disabled = true;
-      exportPackageBtn.disabled = true;
-      sceneSpec.textContent = '等待生成后显示结构化场景规格';
-      refreshPromptPreview();
-      setStatus('已重置。');
-    });
-    
-    exportSpecBtn.addEventListener('click', () => {
-      if (!currentScene) return;
-      const dataStr = JSON.stringify(currentScene.sceneSpec, null, 2);
-      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-      const exportFileDefaultName = `${currentScene.sceneSpec.scene_id}_spec.json`;
-      const linkElement = document.createElement('a');
-      linkElement.setAttribute('href', dataUri);
-      linkElement.setAttribute('download', exportFileDefaultName);
-      linkElement.click();
-      setStatus(`Scene Spec 已导出：${exportFileDefaultName}`);
-    });
-    
-    exportPackageBtn.addEventListener('click', () => {
-      if (!currentScene) return;
-      currentScene.scenePackage.preview_png = sceneCanvas.toDataURL('image/png');
-      const dataStr = JSON.stringify(currentScene.scenePackage, null, 2);
-      const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-      const exportFileDefaultName = `${currentScene.sceneSpec.scene_id}_package.json`;
-      const linkElement = document.createElement('a');
-      linkElement.setAttribute('href', dataUri);
-      linkElement.setAttribute('download', exportFileDefaultName);
-      linkElement.click();
-      setStatus(`Scene Package 已导出：${exportFileDefaultName}，包含 scene spec、元数据和像素场景预览图`);
-    });
-
-    document.querySelectorAll('.chip').forEach(chip => {
+    document.querySelectorAll('.chip').forEach((chip) => {
       chip.addEventListener('click', () => {
-        scenePrompt.value = chip.dataset.prompt || '';
-        refreshPromptPreview();
-        setStatus('已填入示例 prompt。');
+        promptEl.value = chip.dataset.prompt || '';
+        styleHintEl.value = chip.dataset.style || 'cozy-16bit';
+        cameraViewEl.value = chip.dataset.camera || 'top-down';
       });
     });
 
-    refreshPromptPreview();
-    probeLiveApi().then(ok => {
-      if (ok) setStatus('已检测到真实执行层，draft / variant / refine 将优先走 live generation。', 'ok');
-    });
+    generateBtn.addEventListener('click', generate);
+    healthBtn.addEventListener('click', checkHealth);
+    promptEl.value = '森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文，想继续进 Tiled 编辑。';
   </script>
 </body>
 </html>

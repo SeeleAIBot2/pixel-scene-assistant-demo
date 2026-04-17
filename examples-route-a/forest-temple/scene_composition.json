@@ -1,0 +1,49 @@
+{
+  "composition_rules": [
+    "keep central path readable",
+    "reserve top-center or mid-center as focal zone",
+    "use props to support path readability, not obscure it"
+  ],
+  "structures": [
+    {
+      "id": "hero_gate",
+      "kind": "landmark",
+      "x": 8,
+      "y": 1,
+      "w": 4,
+      "h": 3,
+      "module": "temple_gate_module"
+    }
+  ],
+  "props": [
+    {
+      "id": "tree_l_1",
+      "kind": "tree",
+      "x": 2,
+      "y": 4,
+      "module": "tree_cluster"
+    },
+    {
+      "id": "tree_r_1",
+      "kind": "tree",
+      "x": 17,
+      "y": 4,
+      "module": "tree_cluster"
+    },
+    {
+      "id": "runes",
+      "kind": "decal",
+      "x": 10,
+      "y": 5,
+      "module": "rune_decals"
+    }
+  ],
+  "layers": [
+    "ground",
+    "path",
+    "water",
+    "structures",
+    "props",
+    "collision"
+  ]
+}

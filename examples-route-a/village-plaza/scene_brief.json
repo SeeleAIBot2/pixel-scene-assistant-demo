@@ -1,0 +1,22 @@
+{
+  "scene_id": "route_a_温暖村庄广场-白天-16-bit-治愈系-有喷泉和木屋",
+  "prompt": "温暖村庄广场，白天，16-bit，治愈系，有喷泉和木屋",
+  "style_hint": "jrpg-town",
+  "camera_view": "top-down",
+  "mood": "治愈",
+  "variation": "variant-a",
+  "target_tileset_theme": "jrpg-town-base",
+  "map_size_tiles": {
+    "width": 20,
+    "height": 14
+  },
+  "tile_size": 16,
+  "detected_features": [
+    "plaza",
+    "fountain",
+    "houses_cluster",
+    "main_gate",
+    "path"
+  ],
+  "design_goal": "Produce an editable pixel scene layout for tile-based iteration rather than a flattened decorative image."
+}

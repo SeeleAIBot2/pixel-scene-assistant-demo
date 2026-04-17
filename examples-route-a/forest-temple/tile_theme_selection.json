@@ -1,0 +1,26 @@
+{
+  "tileset_name": "dark-ruins-base",
+  "palette": [
+    "#23253f",
+    "#5e4a62",
+    "#324838",
+    "#7a6d6a",
+    "#c7b469",
+    "#2d3549"
+  ],
+  "base_tiles": {
+    "ground": "moss_ground",
+    "path": "stone_path",
+    "water": "rune_pool",
+    "walls": "ruin_wall",
+    "roof": "temple_cap"
+  },
+  "hero_module": "temple_gate_module",
+  "prop_modules": [
+    "tree_cluster",
+    "rune_decals",
+    "stone_lamp",
+    "ruin_pillar"
+  ],
+  "selection_rationale": "Choose reusable tile/theme modules first, then compose scene with editable structures instead of generating a flattened image."
+}

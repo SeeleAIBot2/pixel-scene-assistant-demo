@@ -1,0 +1,53 @@
+{
+  "composition_rules": [
+    "keep central path readable",
+    "reserve top-center or mid-center as focal zone",
+    "use props to support path readability, not obscure it"
+  ],
+  "structures": [
+    {
+      "id": "hero_gate",
+      "kind": "landmark",
+      "x": 8,
+      "y": 1,
+      "w": 4,
+      "h": 3,
+      "module": "village_square_module"
+    },
+    {
+      "id": "left_house",
+      "kind": "building",
+      "x": 2,
+      "y": 6,
+      "w": 3,
+      "h": 3,
+      "module": "house_group"
+    },
+    {
+      "id": "right_house",
+      "kind": "building",
+      "x": 15,
+      "y": 6,
+      "w": 3,
+      "h": 3,
+      "module": "house_group"
+    }
+  ],
+  "props": [
+    {
+      "id": "centerpiece",
+      "kind": "fountain",
+      "x": 10,
+      "y": 7,
+      "module": "water_feature"
+    }
+  ],
+  "layers": [
+    "ground",
+    "path",
+    "water",
+    "structures",
+    "props",
+    "collision"
+  ]
+}

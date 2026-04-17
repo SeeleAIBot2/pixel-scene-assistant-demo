@@ -1,0 +1,62 @@
+{
+  "version": "v0.1",
+  "purpose": "Give the user one real next step for replacing placeholder modules with actual editable assets.",
+  "style_hint": "jrpg-town",
+  "tileset_theme": "jrpg-town-base",
+  "recommended_sources": [
+    {
+      "role": "asset_library",
+      "name": "Kenney Assets",
+      "url": "https://www.kenney.nl/assets",
+      "use_for": [
+        "base tiles",
+        "props",
+        "placeholder replacement"
+      ]
+    },
+    {
+      "role": "layout_editor",
+      "name": "Tiled",
+      "url": "https://www.mapeditor.org/",
+      "use_for": [
+        "open the exported map",
+        "edit pathing",
+        "swap tilesets",
+        "move objects"
+      ]
+    },
+    {
+      "role": "pixel_editor",
+      "name": "Pixelorama",
+      "url": "https://www.pixelorama.org/",
+      "use_for": [
+        "refine custom tiles",
+        "adjust palette",
+        "draw replacement modules"
+      ]
+    }
+  ],
+  "module_replacement_targets": [
+    {
+      "module": "village_square_module",
+      "replace_with": "hero landmark / gate / plaza core"
+    },
+    {
+      "module": "water_feature",
+      "replace_with": "support prop or environment module"
+    },
+    {
+      "module": "house_group",
+      "replace_with": "support prop or environment module"
+    },
+    {
+      "module": "sign_board",
+      "replace_with": "support prop or environment module"
+    },
+    {
+      "module": "barrel",
+      "replace_with": "support prop or environment module"
+    }
+  ],
+  "user_next_step": "Open scene.tiled-project.tmj in Tiled/LDtk-compatible workflow, replace tileset-placeholder.png with real assets, then adjust path/collision/objects before polish."
+}

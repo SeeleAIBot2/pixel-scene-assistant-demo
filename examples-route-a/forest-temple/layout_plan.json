@@ -1,0 +1,61 @@
+{
+  "zones": [
+    {
+      "name": "entrance_focus",
+      "x": 8,
+      "y": 1,
+      "w": 4,
+      "h": 3,
+      "purpose": "main focal point / gate / landmark"
+    },
+    {
+      "name": "mid_plaza",
+      "x": 7,
+      "y": 5,
+      "w": 6,
+      "h": 4,
+      "purpose": "main interaction area"
+    },
+    {
+      "name": "left_support",
+      "x": 1,
+      "y": 3,
+      "w": 6,
+      "h": 9,
+      "purpose": "vegetation / houses / props"
+    },
+    {
+      "name": "right_support",
+      "x": 13,
+      "y": 3,
+      "w": 6,
+      "h": 9,
+      "purpose": "vegetation / houses / props"
+    },
+    {
+      "name": "bottom_approach",
+      "x": 8,
+      "y": 10,
+      "w": 4,
+      "h": 4,
+      "purpose": "player entry / main path"
+    }
+  ],
+  "flow": [
+    {
+      "from": "bottom_approach",
+      "to": "mid_plaza",
+      "kind": "primary_path"
+    },
+    {
+      "from": "mid_plaza",
+      "to": "entrance_focus",
+      "kind": "visual_focal_flow"
+    }
+  ],
+  "walkable_logic": {
+    "primary_path_width_tiles": 2,
+    "path_bias": "centerline",
+    "blocking_rule": "keep focal approach readable and avoid decorative clutter on main route"
+  }
+}

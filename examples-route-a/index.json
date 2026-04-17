@@ -1,0 +1,22 @@
+{
+  "examples": [
+    {
+      "id": "forest-temple",
+      "label": "森林神殿入口 · Dark Fantasy · Top-down",
+      "dir": "./forest-temple",
+      "preview": "./forest-temple/layout-preview.svg",
+      "package": "./forest-temple/scene-package.json",
+      "tiled": "./forest-temple/scene.tiled-project.tmj",
+      "readme": "./forest-temple/README.md"
+    },
+    {
+      "id": "village-plaza",
+      "label": "温暖村庄广场 · JRPG Town · Top-down",
+      "dir": "./village-plaza",
+      "preview": "./village-plaza/layout-preview.svg",
+      "package": "./village-plaza/scene-package.json",
+      "tiled": "./village-plaza/scene.tiled-project.tmj",
+      "readme": "./village-plaza/README.md"
+    }
+  ]
+}
