@@ -1,0 +1,60 @@
+{
+  "spec_version": "v0.2-real",
+  "scene_id": "real_森林神殿入口黄昏像素风俯视角有苔藓石阶和发光符文",
+  "mode": "draft",
+  "brief": {
+    "prompt": "森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文",
+    "style_hint": "dark-fantasy",
+    "camera_view": "top-down",
+    "mood": "神秘"
+  },
+  "generation": {
+    "model": "nanobanana",
+    "provider": "tuzi-gemini",
+    "prompt_used": "Pixel art game environment scene. dark fantasy pixel game environment, moody ruins, restrained colors, readable game-map composition. top-down pixel game scene, map-like layout, readable walkable paths. first-pass draft, prioritize strong composition and scene readability. mood: 神秘. User scene brief: 森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文. Render as a usable game-scene draft rather than a poster. Use chunky readable forms, limited color regions, clear walkable layout, crisp edges, light tile-map logic, simple materials, strong scene hierarchy. Constraints: no photorealism; no painterly brush strokes; no blurry gradients; no realistic camera depth of field; no dense texture noise; no glossy 3d render look; readable silhouettes; limited palette feeling; clean tile-friendly composition.",
+    "reference_images": [],
+    "seed": 42,
+    "size": "1536x1024"
+  },
+  "analysis": {
+    "recommended_resolution": "160x120",
+    "palette_suggestion": [
+      "#a88164",
+      "#8e725b",
+      "#567a64",
+      "#7c4a3e",
+      "#4d624e",
+      "#4e4d47",
+      "#364745",
+      "#4b3337",
+      "#2e323a",
+      "#262f39",
+      "#242936",
+      "#212434",
+      "#2b1a27",
+      "#201d2f",
+      "#1b1f30",
+      "#1b192d",
+      "#181c2d",
+      "#17182b",
+      "#161629",
+      "#1d1324",
+      "#170f21",
+      "#141326",
+      "#110f23",
+      "#0f0b1f"
+    ],
+    "tile_size_suggestion": 16
+  },
+  "export_metadata": {
+    "generated_at": "2026-04-17T07:17:49.342851+00:00",
+    "source": "Pixel Scene Assistant real pipeline v0.2",
+    "supported_workflows": [
+      "Godot",
+      "Tiled",
+      "Aseprite",
+      "Unity pixel art"
+    ],
+    "remote_image_url": "https://static.seeles.ai/media/game_asset/e1f4c1659d3eb94186763c377d94080b_17764102637708430251790592085391.jpg"
+  }
+}

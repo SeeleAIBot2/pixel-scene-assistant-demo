@@ -249,6 +249,7 @@
           <button class="primary" id="generateBtn">生成 mock 草稿</button>
           <button class="secondary" id="variantBtn">来一版变体</button>
           <button class="secondary" id="refineBtn">按当前结果 refine</button>
+          <button class="secondary" id="loadRealSampleBtn">加载真实样例</button>
           <button class="ghost" id="resetBtn">重置</button>
         </div>
 
@@ -256,6 +257,7 @@
 
         <div class="footer-note">
           <div class="small">快速试用：</div>
+          <div class="small" style="margin-top:6px;">现在支持加载一组 <strong>真实 Nano Banana + 像素化</strong> 样例，用来对照 mock renderer 和真实链路的差别。</div>
           <div class="chips">
             <div class="chip" data-prompt="森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文">森林神殿</div>
             <div class="chip" data-prompt="温暖村庄广场，白天，16-bit，治愈系，有喷泉和木屋">治愈村庄</div>
@@ -300,6 +302,7 @@
     const generateBtn = document.getElementById('generateBtn');
     const variantBtn = document.getElementById('variantBtn');
     const refineBtn = document.getElementById('refineBtn');
+    const loadRealSampleBtn = document.getElementById('loadRealSampleBtn');
     const resetBtn = document.getElementById('resetBtn');
     const status = document.getElementById('status');
     const resultCard = document.getElementById('resultCard');
@@ -549,10 +552,28 @@
       }
     }
 
-    function renderResult(payload) {
+    function drawPreviewImage(url) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+          sceneCtx.imageSmoothingEnabled = false;
+          sceneCtx.clearRect(0, 0, sceneCanvas.width, sceneCanvas.height);
+          sceneCtx.drawImage(img, 0, 0, sceneCanvas.width, sceneCanvas.height);
+          resolve();
+        };
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+
+    async function renderResult(payload) {
       currentScene = payload;
       sceneCtx.imageSmoothingEnabled = false;
-      drawSceneFromSpec(payload.sceneSpec);
+      if (payload.realPreview) {
+        await drawPreviewImage(payload.realPreview);
+      } else {
+        drawSceneFromSpec(payload.sceneSpec);
+      }
       sceneBadge.textContent = payload.mode;
       resultTitle.textContent = payload.title;
       resultSummary.textContent = payload.summary;
@@ -571,16 +592,51 @@
       refineBtn.disabled = true;
       await new Promise(r => setTimeout(r, 700));
       const payload = fakeResponse(actionMode);
-      renderResult(payload);
+      await renderResult(payload);
       setStatus(`mock ${actionMode} 已完成。现在你可以继续试 variant / refine。`, 'ok');
       generateBtn.disabled = false;
       variantBtn.disabled = false;
       refineBtn.disabled = false;
     }
 
+    async function loadRealSample() {
+      setStatus('正在加载真实样例…', 'warn');
+      loadRealSampleBtn.disabled = true;
+      try {
+        const [pkgResp, specResp] = await Promise.all([
+          fetch('./examples/real-sample-package.json'),
+          fetch('./examples/real-sample-spec.json')
+        ]);
+        const pkg = await pkgResp.json();
+        const spec = await specResp.json();
+        const payload = {
+          ok: true,
+          mode: 'Real Sample',
+          title: 'Real Sample · Nano Banana + Pixelization',
+          summary: '这是一组真实 Nano Banana 生成后，再经过降采样、限色和 nearest-neighbor 放大的像素场景样例。它不是前端程序画出来的，而是真实生成链路的输出。',
+          nextActions: [
+            '对照 mock renderer 与真实样例，判断真实链路的像素场景感是否更接近可生产资产',
+            '下一步可继续加参考图、变体策略和更细的 palette control',
+            '若要把 demo 完全变成真生成工具，还需要补后端/API 执行层'
+          ],
+          sceneSpec: spec,
+          scenePackage: pkg,
+          realPreview: './examples/real-sample-preview.png'
+        };
+        await renderResult(payload);
+        setStatus('真实样例已加载。当前画面来自 Nano Banana + pixelization 真链路。', 'ok');
+      } catch (err) {
+        console.error(err);
+        setStatus('真实样例加载失败，请刷新后重试。', 'warn');
+      } finally {
+        loadRealSampleBtn.disabled = false;
+      }
+    }
+
     generateBtn.addEventListener('click', () => run('draft'));
     variantBtn.addEventListener('click', () => run('variant'));
     refineBtn.addEventListener('click', () => run('refine'));
+    loadRealSampleBtn.addEventListener('click', () => loadRealSample());
     resetBtn.addEventListener('click', () => {
       scenePrompt.value = '';
       mood.value = '';
