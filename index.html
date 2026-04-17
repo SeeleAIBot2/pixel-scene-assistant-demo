@@ -245,6 +245,59 @@
           </div>
         </div>
 
+        <div class="row">
+          <div>
+            <label for="modelName">模型</label>
+            <select id="modelName">
+              <option value="nanobanana">Nano Banana</option>
+            </select>
+          </div>
+          <div>
+            <label for="apiBase">真实执行层 API</label>
+            <input id="apiBase" placeholder="http://127.0.0.1:8031" value="http://127.0.0.1:8031" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="paletteSize">Palette 色数</label>
+            <input id="paletteSize" type="number" min="8" max="64" value="24" />
+          </div>
+          <div>
+            <label for="baseResolution">基础分辨率</label>
+            <select id="baseResolution">
+              <option value="128x96">128x96</option>
+              <option value="160x120" selected>160x120</option>
+              <option value="192x144">192x144</option>
+              <option value="256x192">256x192</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div>
+            <label for="upscale">放大倍数</label>
+            <select id="upscale">
+              <option value="3">3x</option>
+              <option value="4" selected>4x</option>
+              <option value="5">5x</option>
+              <option value="6">6x</option>
+            </select>
+          </div>
+          <div>
+            <label for="seedInput">Seed（可选）</label>
+            <input id="seedInput" type="number" placeholder="留空 = 随机" />
+          </div>
+        </div>
+
+        <label for="referenceImages">Reference Images（每行一个 URL，可选）</label>
+        <textarea id="referenceImages" placeholder="可粘贴像素风参考图 / 构图参考图 / 上一版结果图 URL，用于 variant / refine"></textarea>
+
+        <label for="promptPreview">Prompt Builder 预览</label>
+        <div style="background:#11162b; border:1px solid var(--border); border-radius:12px; padding:12px; overflow-x:auto;">
+          <pre style="margin:0; font-size:12px; color:var(--muted); white-space: pre-wrap;" id="promptPreview">等待输入后生成 prompt builder 预览</pre>
+        </div>
+
         <div class="actions">
           <button class="primary" id="generateBtn">生成 mock 草稿</button>
           <button class="secondary" id="variantBtn">来一版变体</button>
@@ -257,7 +310,7 @@
 
         <div class="footer-note">
           <div class="small">快速试用：</div>
-          <div class="small" style="margin-top:6px;">现在支持加载一组 <strong>真实 Nano Banana + 像素化</strong> 样例，用来对照 mock renderer 和真实链路的差别。</div>
+          <div class="small" style="margin-top:6px;">现在支持两种路径：1）加载固定真实样例；2）如果 API 可用，则 draft / variant / refine 会走 <strong>真实 Nano Banana + 像素化</strong> 执行层，而不再只是固定样例。</div>
           <div class="chips">
             <div class="chip" data-prompt="森林神殿入口，黄昏，像素风，俯视角，有苔藓石阶和发光符文">森林神殿</div>
             <div class="chip" data-prompt="温暖村庄广场，白天，16-bit，治愈系，有喷泉和木屋">治愈村庄</div>
@@ -299,6 +352,14 @@
     const cameraView = document.getElementById('cameraView');
     const mood = document.getElementById('mood');
     const mode = document.getElementById('mode');
+    const modelName = document.getElementById('modelName');
+    const apiBase = document.getElementById('apiBase');
+    const paletteSize = document.getElementById('paletteSize');
+    const baseResolution = document.getElementById('baseResolution');
+    const upscale = document.getElementById('upscale');
+    const seedInput = document.getElementById('seedInput');
+    const referenceImages = document.getElementById('referenceImages');
+    const promptPreview = document.getElementById('promptPreview');
     const generateBtn = document.getElementById('generateBtn');
     const variantBtn = document.getElementById('variantBtn');
     const refineBtn = document.getElementById('refineBtn');
@@ -318,6 +379,7 @@
     const exportPackageBtn = document.getElementById('exportPackageBtn');
     
     let currentScene = null;
+    let liveApiHealthy = false;
 
     const palettes = {
       'cozy-16bit': {
@@ -341,6 +403,52 @@
     function setStatus(text, type = '') {
       status.textContent = text;
       status.className = 'status' + (type ? ' ' + type : '');
+    }
+
+    function splitReferenceImages() {
+      return referenceImages.value
+        .split(/\n+/)
+        .map(v => v.trim())
+        .filter(Boolean);
+    }
+
+    function buildPromptPreviewText(actionMode = mode.value) {
+      const prompt = scenePrompt.value.trim() || '未提供场景描述';
+      const style = styleHint.value;
+      const camera = cameraView.value;
+      const moodText = mood.value.trim() || 'default';
+      const refs = splitReferenceImages();
+      const refText = refs.length ? `参考图 ${refs.length} 张` : '无参考图';
+      return [
+        `model=${modelName.value}`,
+        `mode=${actionMode}`,
+        `style=${style}`,
+        `camera=${camera}`,
+        `mood=${moodText}`,
+        `palette=${paletteSize.value} colors`,
+        `base=${baseResolution.value}`,
+        `upscale=${upscale.value}x`,
+        `${refText}`,
+        '',
+        `Scene brief: ${prompt}`,
+        '',
+        `Prompt builder intent: pixel-art game environment, readable composition, limited palette feeling, clear silhouettes, tile-friendly structure.`
+      ].join('\n');
+    }
+
+    function refreshPromptPreview(actionMode = mode.value) {
+      promptPreview.textContent = buildPromptPreviewText(actionMode);
+    }
+
+    async function probeLiveApi() {
+      const url = `${apiBase.value.replace(/\/$/, '')}/health`;
+      try {
+        const resp = await fetch(url, { method: 'GET' });
+        liveApiHealthy = resp.ok;
+      } catch (_) {
+        liveApiHealthy = false;
+      }
+      return liveApiHealthy;
     }
 
     function generateSceneSpec(prompt, style, camera, mood, mode) {
@@ -555,6 +663,7 @@
     function drawPreviewImage(url) {
       return new Promise((resolve, reject) => {
         const img = new Image();
+        img.crossOrigin = 'anonymous';
         img.onload = () => {
           sceneCtx.imageSmoothingEnabled = false;
           sceneCtx.clearRect(0, 0, sceneCanvas.width, sceneCanvas.height);
@@ -584,19 +693,83 @@
       resultCard.classList.add('show');
     }
 
+    async function runLive(actionMode) {
+      const refs = splitReferenceImages();
+      const previousRemote = currentScene?.sceneSpec?.export_metadata?.remote_image_url
+        || currentScene?.scenePackage?.spec?.export_metadata?.remote_image_url
+        || currentScene?.scenePackage?.spec?.export_metadata?.remote_image_url;
+      if ((actionMode === 'variant' || actionMode === 'refine') && previousRemote && !refs.includes(previousRemote)) {
+        refs.unshift(previousRemote);
+      }
+      const body = {
+        prompt: scenePrompt.value.trim(),
+        style_hint: styleHint.value,
+        camera_view: cameraView.value,
+        mood: mood.value.trim(),
+        mode: actionMode,
+        model: modelName.value,
+        palette_size: Number(paletteSize.value || 24),
+        base_resolution: baseResolution.value,
+        upscale: Number(upscale.value || 4),
+        reference_images: refs,
+      };
+      if (seedInput.value.trim()) body.seed = Number(seedInput.value);
+
+      const resp = await fetch(`${apiBase.value.replace(/\/$/, '')}/api/generate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) throw new Error(data.error || 'real generation failed');
+      const apiRoot = apiBase.value.replace(/\/$/, '');
+      return {
+        ok: true,
+        mode: actionMode,
+        title: `${actionMode} · Real Generation`,
+        summary: `已通过真实执行层完成 ${actionMode}：Nano Banana 生成 + pixelization + palette reduction。当前不是固定样例，而是按你本次输入实时生成。`,
+        nextActions: [
+          '如果构图方向对了，继续 variant 看更多方案',
+          '如果主体对了但细节不稳，继续 refine',
+          '可继续增加 reference image，进一步锁视角、构图和材质语言'
+        ],
+        sceneSpec: data.sceneSpec,
+        scenePackage: data.scenePackage,
+        realPreview: `${apiRoot}${data.assets.preview}`,
+        realOriginal: `${apiRoot}${data.assets.original}`
+      };
+    }
+
     async function run(actionMode) {
       mode.value = actionMode;
-      setStatus('正在生成 mock 结果…', 'warn');
+      refreshPromptPreview(actionMode);
+      setStatus('正在尝试真实生成…', 'warn');
       generateBtn.disabled = true;
       variantBtn.disabled = true;
       refineBtn.disabled = true;
-      await new Promise(r => setTimeout(r, 700));
-      const payload = fakeResponse(actionMode);
-      await renderResult(payload);
-      setStatus(`mock ${actionMode} 已完成。现在你可以继续试 variant / refine。`, 'ok');
-      generateBtn.disabled = false;
-      variantBtn.disabled = false;
-      refineBtn.disabled = false;
+      try {
+        const healthy = await probeLiveApi();
+        if (healthy && scenePrompt.value.trim()) {
+          const payload = await runLive(actionMode);
+          await renderResult(payload);
+          setStatus(`real ${actionMode} 已完成。当前结果来自真实执行层。`, 'ok');
+        } else {
+          if (!scenePrompt.value.trim()) throw new Error('请先输入场景描述');
+          await new Promise(r => setTimeout(r, 400));
+          const payload = fakeResponse(actionMode);
+          await renderResult(payload);
+          setStatus(`真实执行层不可用，已回退到 mock ${actionMode}。`, 'warn');
+        }
+      } catch (err) {
+        console.error(err);
+        const payload = fakeResponse(actionMode);
+        await renderResult(payload);
+        setStatus(`真实执行层失败，已回退 mock：${err.message || err}`, 'warn');
+      } finally {
+        generateBtn.disabled = false;
+        variantBtn.disabled = false;
+        refineBtn.disabled = false;
+      }
     }
 
     async function loadRealSample() {
@@ -637,15 +810,25 @@
     variantBtn.addEventListener('click', () => run('variant'));
     refineBtn.addEventListener('click', () => run('refine'));
     loadRealSampleBtn.addEventListener('click', () => loadRealSample());
+    [scenePrompt, styleHint, cameraView, mood, mode, modelName, apiBase, paletteSize, baseResolution, upscale, seedInput, referenceImages].forEach(el => {
+      el.addEventListener('input', () => refreshPromptPreview());
+      el.addEventListener('change', () => refreshPromptPreview());
+    });
     resetBtn.addEventListener('click', () => {
       scenePrompt.value = '';
       mood.value = '';
       mode.value = 'draft';
+      referenceImages.value = '';
+      seedInput.value = '';
+      paletteSize.value = '24';
+      baseResolution.value = '160x120';
+      upscale.value = '4';
       resultCard.classList.remove('show');
       currentScene = null;
       exportSpecBtn.disabled = true;
       exportPackageBtn.disabled = true;
       sceneSpec.textContent = '等待生成后显示结构化场景规格';
+      refreshPromptPreview();
       setStatus('已重置。');
     });
     
@@ -677,8 +860,14 @@
     document.querySelectorAll('.chip').forEach(chip => {
       chip.addEventListener('click', () => {
         scenePrompt.value = chip.dataset.prompt || '';
+        refreshPromptPreview();
         setStatus('已填入示例 prompt。');
       });
+    });
+
+    refreshPromptPreview();
+    probeLiveApi().then(ok => {
+      if (ok) setStatus('已检测到真实执行层，draft / variant / refine 将优先走 live generation。', 'ok');
     });
   </script>
 </body>
